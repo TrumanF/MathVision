@@ -3,27 +3,45 @@ import cv2
 import numpy as np
 import os
 import math
+import h5py
 
 pytesseract.pytesseract.tesseract_cmd = r'C:\\Program Files\\Tesseract-OCR\\tesseract'
 
 
+# eq_no is the number of the test file
 def main(eq_no):
-    # Open Image
-    img = cv2.imread('testimages/equation{0}.png'.format(eq_no))
-    # Resize image to 3X
-    img = cv2.resize(img, (round(img.shape[1] * 2), round(img.shape[0] * 2)))
-    # Blur image
-    img_blur = cv2.GaussianBlur(img, (3, 3), 0)
-    # Make image gray scale, then black and white
-    img_gray = cv2.cvtColor(img_blur, cv2.COLOR_BGR2GRAY)
-    (thresh, blackAndWhiteImage) = cv2.threshold(img_gray, 127, 255, cv2.THRESH_BINARY)
-    # Invert black and white image
-    img_inv = cv2.bitwise_not(blackAndWhiteImage)
+    img_dict = {}
+    for i in range(1, eq_no):
+        img_dict["img{0}".format(i)] = cv2.imread('testimages/example{0}.png'.format(i))
+    """
+    For each image opened do 5 things:
+    1) Resize image (optional)
+    2) Blur the image with GaussianBlur
+    3) Convert image to grayscale
+    4) Convert image to black and white
+    5) Convert to inverted black and white
+    Then set original image to new, modified image
+    """
+    for image in img_dict:
+        scale = 1
+        blur = (3, 3)
+        temp_img = img_dict[image]
+        temp_img = cv2.resize(temp_img, (round(temp_img.shape[1] * scale), round(temp_img.shape[0] * scale)))
+        temp_img_blur = cv2.GaussianBlur(temp_img, blur, 0)
+        temp_img_gray = cv2.cvtColor(temp_img_blur, cv2.COLOR_BGR2GRAY)
+        (thresh, temp_img_baw) = cv2.threshold(temp_img_gray, 127, 255, cv2.THRESH_BINARY)
+        temp_img_inv = cv2.bitwise_not(temp_img_baw)
+        img_dict[image] = temp_img_inv
 
     # Get contours of characters in image
     # Iterate through each contour and draw a bounding rectangle
     # Create 'boxes' list to store rectangles created
     def find_contours(input_img):
+        """ Finds contours of input image using cv2.findContours(). Returns boxes created.
+        Parameters:
+        ---------------
+        image   input image to find contours for
+        """
         contours, hierarchy = cv2.findContours(input_img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_TC89_KCOS)
         boxes = np.zeros((len(contours), 4))
         j = 0
@@ -37,10 +55,8 @@ def main(eq_no):
                 try:
                     if boxes[i][0] - 10 <= x <= boxes[i][0] + 10 and boxes[i][1] - 20 <= y <= boxes[i][1] + 20:
                         temp_boxes = np.delete(boxes, boxes[i])
-                        print("Removing", boxes[i], "because of", (x, y, w, h))
                         boxes[i] = [min(x, boxes[i][0]), min(y, boxes[i][1]), max(x + h, boxes[i][2]), max(y + h, boxes[i][3])]
                         boxes.resize((boxes.shape[0]-1, 4))
-                        print("New size", boxes.shape[0])
                         added = True
                         j -= 1
                         break
@@ -51,8 +67,14 @@ def main(eq_no):
                 boxes[j-1] = [x, y, x + w, y + h]
         return boxes
 
-    def crop_image(input_img):
-        nonlocal boxes
+    def crop_image(input_img, boxes):
+        """ Crops image based off of generated boxes. Returns cropped image.
+        Note: Currently does not work on skewed images
+        Parameters:
+        ---------------
+        input_img       input image to crop
+        boxes           boxes of all found contours
+        """
         sz = 5
         left = int(np.min(boxes[:, 0])) - sz
         top = int(np.min(boxes[:, 1])) - sz
@@ -63,107 +85,146 @@ def main(eq_no):
         return temp_image
 
     def draw_boxes(input_img, boxes):
+        """ Draws rectangles on input image, given the box data of that image. Returns new modified image.
+        Parameters:
+        ---------------
+        boxes       array of rectangular data: (x, y, w+x, h+y)     i.e. cv2.findContours() output
+        image       input image to draw rectangles on
+        """
         temp_img = input_img
         for box in boxes:
             temp_box = [int(element) for element in box]
             temp_img = cv2.rectangle(temp_img, (temp_box[0], temp_box[1]), (temp_box[2], temp_box[3]), 255, 1)
         return temp_img
 
-    boxes = find_contours(img_inv)
-    img_cropped = crop_image(img_inv)
-    boxes = find_contours(img_cropped)
-    # img_boxes = draw_boxes(img_cropped, boxes)
+    def create_boxes(boxes, image, name):
+        """ Creates boxes for given input image and writes them to a .box file.
+        Parameters:
+        ---------------
+        boxes       array of rectangular data: (x, y, w+x, h+y)     i.e. cv2.findContours() output
+        image       input image to create boxes for
+        name        name of .box file to be created
+        """
+        f = open("{0}{1}.box".format(name, eq_no), "w+")
+        for box in boxes:
+            temp_box = [int(element) for element in box]
+            temp_box = (temp_box[0], int(image.shape[0]) - temp_box[1], temp_box[2], int(image.shape[0]) - temp_box[3])
+            f.write(("x " + str(temp_box).strip("[]()") + " 0" + "\n").replace(",", ""))
+        f.close()
 
     # Set directory for final images to be saved
     directory = r'C:\Users\Truman\Documents\GitHub\MathVision\testimages\trainingdata'
     os.chdir(directory)
 
-    characters = []
+    boxes_dict = {}
+    for image in img_dict:
+        # Find boxes of each character
+        boxes = find_contours(img_dict[image])
+        # Crop image
+        img_dict[image] = crop_image(img_dict[image], boxes)
+        # Find new boxes for new cropped image
+        boxes_dict[image] = find_contours(img_dict[image])
 
-    for box in boxes:
-        sz = 3
-        temp_box = [int(element) for element in box]
-        characters.append(img_cropped[temp_box[1]-sz:temp_box[3]+sz, temp_box[0]-sz:temp_box[2]+sz])
+    characters_dict = {}
+    for image in img_dict:
+        i = 0
+        for box in boxes_dict[image]:
+            i += 1
+            # Set a safezone of 3 pixels around the character
+            sz = 3
+            # Create temp_box list that converts all elements in boxes to integers (from floats).
+            temp_box = [int(element) for element in box]
+            characters_dict["character{0}_{1}".format(i, image)] = img_dict[image][temp_box[1] - sz:temp_box[3] + sz, temp_box[0] - sz:temp_box[2] + sz]
 
+    # Find character with largest size in both x and y
+    max_x = 0
+    max_y = 0
+    for character in characters_dict:
+        if characters_dict[character].shape[0] > max_y:
+            max_y = characters_dict[character].shape[0]
+        if characters_dict[character].shape[1] > max_x:
+            max_x = characters_dict[character].shape[1]
 
-    # Resize all characters to be same size by adding black space to all sides
-    resized_chars = []
-    for image in characters:
-        size = 90
+    # Resize all characters to be same size as character with largest dimension by adding black space to all sides
+    size = max(max_x, max_y)
+    if size % 2 != 0:
+        size += 1
+    for image in characters_dict:
         extra_y = 0
         extra_x = 0
-        if image.shape[0] % 2 == 1:
+        if characters_dict[image].shape[0] % 2 == 1:
             extra_y = 1
-        if image.shape[1] % 2 == 1:
+        if characters_dict[image].shape[1] % 2 == 1:
             extra_x = 1
-        b_y = int((size - image.shape[0])/2)
-        b_x = int((size - image.shape[1])/2)
-        image = cv2.copyMakeBorder(image, b_y + extra_y, b_y, b_x + extra_x, b_x, 1, (0, 0, 0))
-        resized_chars.append(image)
+        b_y = int((size - characters_dict[image].shape[0])/2)
+        b_x = int((size - characters_dict[image].shape[1])/2)
+        characters_dict[image] = cv2.copyMakeBorder(characters_dict[image], b_y + extra_y, b_y, b_x + extra_x, b_x, 1, (0, 0, 0))
 
-
-
-    # i = -1
-    # for image in characters:
-    #     i += 1
-    #     scale = 1
-    #     border = 5
-    #     image = cv2.resize(image, (round(image.shape[1] * scale), round(image.shape[0] * scale)))
-    #     image = cv2.copyMakeBorder(image, border, border, border, border, 1, (0, 0, 0))
-    #     #cv2.imshow("Image2", image)
-    #     #text = pytesseract.image_to_string(image, config='--psm 10')
-    #     #print(text)
-    #     #cv2.imwrite("mat.cambriamath.exp{0}.png".format(i), image)
+    length = math.floor(len(characters_dict) / 10)
+    remainder = len(characters_dict) % 10
+    blank_img = np.zeros((1, size, size), dtype="uint8")
 
     # Create grid of all characters found in original input image
-    character_row = []
-    length = math.floor(len(resized_chars) / 10)
-    print(length)
-    remainder = len(resized_chars) % 10
-    print(remainder)
-    blank_img = np.zeros((90, 90), dtype="uint8")
+    final_concat_dict = {}
+    resized_chars_copy = np.asarray(list(characters_dict.values()))
 
+    character_row = []
     # Make rows of 10 characters
     for i in range(length):
-        h_concat = cv2.hconcat(resized_chars[10*i:10*(i+1)])
+        h_concat = cv2.hconcat(resized_chars_copy[10*i:10*(i+1)])
         # Check if this is the last row to create
         if i == length - 1 and remainder != 0:
             # Add blank sections for end of photo
             for j in range(10 - remainder):
-                print("adding blank", i)
-                resized_chars.append(blank_img)
-            h_concat_last = cv2.hconcat(resized_chars[10*(i+1):10*(i+2)])
+                resized_chars_copy = np.append(resized_chars_copy, blank_img, axis=0)
+            h_concat_last = cv2.hconcat(resized_chars_copy[10*(i+1):10*(i+2)])
             character_row.append(h_concat)
             character_row.append(h_concat_last)
             break
         character_row.append(h_concat)
+    # Produce final grids with 10 items in each row and column
+    k = -1
+    for row in range(1, len(character_row)+1):
+        if row % 10 == 0:
+            k += 1
+            final_concat_dict["final_concat_{}".format(k)] = cv2.vconcat([character_row[x] for x in range(k*10, (k+1)*10)])
+    # If there are extra characters, put them all into the final image, which may be less than 10 rows
+    final_concat_dict["final_concat_{}".format(k)] = cv2.vconcat([character_row[x] for x in range(k*10, (k+1)*10)])
+
+    final_img_list = []
+    for image in characters_dict:
+        final_img_list.append(characters_dict[image])
+
+    for image in final_concat_dict:
+        cv2.imshow("image", final_concat_dict[image])
+        cv2.waitKey()
+    return final_img_list
 
 
-    # Take all rows and vertically concatenate into one large grid
-    final_concat = cv2.vconcat([character_row[x] for x in range(len(character_row))])
-    boxes_characters = find_contours(final_concat)
-    # final_concat_draw = draw_boxes(final_concat, boxes_characters)
+def store_many_hdf5(images, labels):
+    """ Stores an array of images to HDF5.
+        Parameters:
+        ---------------
+        images       images array, (N, 32, 32, 3) to be stored
+        labels       labels array, (N, 1) to be stored
+    """
+    num_images = len(images)
+    hdf5_dir = "C:/Users/Truman/Documents/GitHub/MathVision/HDF5/f{0}_characters.h5".format(num_images)
+    # Create a new HDF5 file
+    file = h5py.File(hdf5_dir, "w")
 
-    f = open("mat.cambriamath.exp{0}.box".format(eq_no), "w+")
-    for box in boxes_characters:
-        temp_box = [int(element) for element in box]
-        temp_box = (temp_box[0], int(final_concat.shape[0]) - temp_box[1], temp_box[2], int(final_concat.shape[0]) - temp_box[3])
-        f.write(("x " + str(temp_box).strip("[]()") + " 0" + "\n").replace(",", ""))
-    f.close()
-
-    img_final = img_cropped
-    text1 = pytesseract.image_to_string(resized_chars[-9], config="--psm 10 -l mat+eng")
-    cv2.imshow("Character", resized_chars[-10])
-    text2 = pytesseract.image_to_string(img_final, config="-l mat+eng")
-    print(text1)
-    print(text2)
-    cv2.imshow("Image3", final_concat)
-    cv2.imshow("Image", img_final)
-    #cv2.imwrite("mat.cambriamath.exp{0}.png".format(eq_no), final_concat)
-    cv2.waitKey()
-
+    # Create a dataset in the file
+    dataset = file.create_dataset(
+        "images", np.shape(images), h5py.h5t.STD_U8BE, data=images
+    )
+    meta_set = file.create_dataset(
+        "meta", np.shape(labels), h5py.h5t.STD_U8BE, data=labels
+    )
+    file.close()
+    return hdf5_dir
 
 if __name__ == "__main__":
-    main(1)
-
+    characters = main(4)
+    path = store_many_hdf5(characters, characters)
+    print("Complete! New HDF5 stored at {0}".format(path))
 
