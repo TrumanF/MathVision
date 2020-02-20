@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="aaf8a22e-0661-4b80-870a-ebca518f2c06" name="Default Changelist" comment="" />
+    <list default="true" id="aaf8a22e-0661-4b80-870a-ebca518f2c06" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Main2.py" beforeDir="false" afterPath="$PROJECT_DIR$/Main2.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -28,7 +31,11 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="ProjectId" id="1XxTaubfgrabUKHJxOQfXSmTgZn" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
@@ -82,7 +89,7 @@
       <workItem from="1581986813934" duration="1422000" />
       <workItem from="1581988541913" duration="21575000" />
       <workItem from="1582076559082" duration="9218000" />
-      <workItem from="1582150734795" duration="16353000" />
+      <workItem from="1582150734795" duration="17128000" />
     </task>
     <servers />
   </component>

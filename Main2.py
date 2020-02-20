@@ -164,6 +164,6 @@ def main(eq_no):
 
 
 if __name__ == "__main__":
-        main(1)
+    main(1)
 
 
