@@ -9,16 +9,19 @@ import numpy as np
 import os
 import math
 import h5py
-
+import GenerateData
 pytesseract.pytesseract.tesseract_cmd = r'C:\\Program Files\\Tesseract-OCR\\tesseract'
 
 
 # eq_no is the number of the test file
-def main(eq_no, user_input):
-    eq_no += 1
+def main(user_input):
+    useable_characters = GenerateData.characters
     img_dict = {}
-    for i in range(1, eq_no):
-        img_dict["img{0}".format(i)] = cv2.imread('testimages/individual{0}_test.png'.format("2"))
+    for char in useable_characters:
+        upper = False
+        if char.isupper():
+            upper = True
+        img_dict["img_{0}".format(char)] = cv2.imread('PAGES/page_{0}.png'.format(char.lower() + "_upper" if upper else char))
     """
     For each image opened do 5 things:
     1) Resize image (optional)
@@ -29,6 +32,7 @@ def main(eq_no, user_input):
     Then set original image to new, modified image
     """
     for image in img_dict:
+        print(image)
         scale = 1
         blur = (3, 3)
         temp_img = img_dict[image]
@@ -111,7 +115,7 @@ def main(eq_no, user_input):
         image       input image to create boxes for
         name        name of .box file to be created
         """
-        f = open("{0}{1}.box".format(name, eq_no), "w+")
+        f = open("{0}{1}.box".format(name, "1"), "w+")
         for box in boxes:
             temp_box = [int(element) for element in box]
             temp_box = (temp_box[0], int(image.shape[0]) - temp_box[1], temp_box[2], int(image.shape[0]) - temp_box[3])
@@ -229,19 +233,19 @@ def store_many_hdf5(images, labels):
     file = h5py.File(hdf5_dir, "w")
 
     # Create a dataset in the file
-    dataset = file.create_dataset(
-        "images", np.shape(images), h5py.h5t.STD_U8BE, data=images
-    )
-    meta_set = file.create_dataset(
-        "meta", np.shape(labels), h5py.h5t.STD_U8BE, data=labels
-    )
+    file.create_dataset("images", np.shape(images), h5py.h5t.STD_U8BE, data=images)
+    file.create_dataset("labels", np.shape(labels), h5py.h5t.STD_U8BE, data=labels)
     file.close()
     return hdf5_dir
 
 
 if __name__ == "__main__":
-    user_input = input("Would you like to train or test?").lower()
-    characters = main(1, user_input)
+    user_input = input("Would you like to train or test?").lower().strip(" ")
+    characters = main(user_input)
     path = store_many_hdf5(characters, characters)
     print("Complete! New HDF5 stored at {0}".format(path))
 
+# Return tuple in main method with label data, which can be obtained before processing from file name or from character_string list
+# store to HDF5 as labels
+# Create new file in project to handle keras crap
+# Learn to save machinelearning data
