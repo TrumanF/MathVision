@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="aaf8a22e-0661-4b80-870a-ebca518f2c06" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Main2.py" beforeDir="false" afterPath="$PROJECT_DIR$/Main2.py" afterDir="false" />
-    </list>
+    <list default="true" id="aaf8a22e-0661-4b80-870a-ebca518f2c06" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -99,7 +96,7 @@
       <workItem from="1582150734795" duration="17163000" />
       <workItem from="1582189928479" duration="30000" />
       <workItem from="1582231109730" duration="11865000" />
-      <workItem from="1582243012831" duration="5857000" />
+      <workItem from="1582243012831" duration="6144000" />
     </task>
     <task id="LOCAL-00001" summary="Reshaping code">
       <created>1582169088588</created>
@@ -122,7 +119,14 @@
       <option name="project" value="LOCAL" />
       <updated>1582244044220</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Can now specify whether you'd like to create training test data for keras model.">
+      <created>1582256272222</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1582256272222</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -131,7 +135,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Reshaping code" />
     <MESSAGE value="Program has been significantly rewritten to now produce H5FD file with all characters extracted from input image." />
-    <option name="LAST_COMMIT_MESSAGE" value="Program has been significantly rewritten to now produce H5FD file with all characters extracted from input image." />
+    <MESSAGE value="Can now specify whether you'd like to create training test data for keras model." />
+    <option name="LAST_COMMIT_MESSAGE" value="Can now specify whether you'd like to create training test data for keras model." />
   </component>
   <component name="WindowStateProjectService">
     <state x="414" y="176" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1582004323027">
@@ -142,10 +147,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="711" y="324" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1582232252777" />
-    <state x="585" y="115" key="CommitChangelistDialog2" timestamp="1582244043227">
+    <state x="585" y="115" key="CommitChangelistDialog2" timestamp="1582256271090">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="585" y="115" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1582244043227" />
+    <state x="585" y="115" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1582256271090" />
     <state x="740" y="276" key="FileChooserDialogImpl" timestamp="1582234334818">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
