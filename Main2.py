@@ -1,3 +1,8 @@
+"""
+Write code to open any file in testimages file with .png extension
+"""
+
+
 import pytesseract
 import cv2
 import numpy as np
@@ -10,9 +15,10 @@ pytesseract.pytesseract.tesseract_cmd = r'C:\\Program Files\\Tesseract-OCR\\tess
 
 # eq_no is the number of the test file
 def main(eq_no):
+    eq_no += 1
     img_dict = {}
     for i in range(1, eq_no):
-        img_dict["img{0}".format(i)] = cv2.imread('testimages/example{0}.png'.format(i))
+        img_dict["img{0}".format(i)] = cv2.imread('testimages/individual{0}.png'.format(i))
     """
     For each image opened do 5 things:
     1) Resize image (optional)
@@ -53,7 +59,7 @@ def main(eq_no):
                 # Check if there is another rectangle that is somewhat above it (within 20 pixels) and add them as the
                 # same rectangle
                 try:
-                    if boxes[i][0] - 10 <= x <= boxes[i][0] + 10 and boxes[i][1] - 20 <= y <= boxes[i][1] + 20:
+                    if boxes[i][0] - 5 <= x <= boxes[i][0] + 5 and boxes[i][1] - 15 <= y <= boxes[i][1] + 15:
                         temp_boxes = np.delete(boxes, boxes[i])
                         boxes[i] = [min(x, boxes[i][0]), min(y, boxes[i][1]), max(x + h, boxes[i][2]), max(y + h, boxes[i][3])]
                         boxes.resize((boxes.shape[0]-1, 4))
@@ -75,7 +81,7 @@ def main(eq_no):
         input_img       input image to crop
         boxes           boxes of all found contours
         """
-        sz = 5
+        sz = 3
         left = int(np.min(boxes[:, 0])) - sz
         top = int(np.min(boxes[:, 1])) - sz
         right = int(np.max(boxes[:, 2])) + sz
@@ -223,8 +229,9 @@ def store_many_hdf5(images, labels):
     file.close()
     return hdf5_dir
 
+
 if __name__ == "__main__":
-    characters = main(4)
+    characters = main(1)
     path = store_many_hdf5(characters, characters)
     print("Complete! New HDF5 stored at {0}".format(path))
 
