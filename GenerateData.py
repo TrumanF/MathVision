@@ -4,7 +4,7 @@ import numpy as np
 characters = [x for x in '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ#$()+,-.:=[]^{}']
 print(characters)
 
-def main():
+def main(test):
     def create_base(size):
         base = np.full((size, size), 255, dtype="uint8")
         return base
@@ -21,7 +21,10 @@ def main():
         print(char)
         if char.isupper():
             upper = True
-        cv2.imwrite("PAGES/page_{0}.png".format(char.lower() + "_upper" if upper else char), img)
+        extra = ""
+        if test:
+            extra = "_test"
+        cv2.imwrite("PAGES/page_{0}{1}.png".format(char.lower() + "_upper" if upper else char, extra), img)
         return img
 
     def display_image(img):
@@ -34,4 +37,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    main(True)

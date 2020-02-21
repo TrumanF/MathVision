@@ -16,12 +16,16 @@ pytesseract.pytesseract.tesseract_cmd = r'C:\\Program Files\\Tesseract-OCR\\tess
 # eq_no is the number of the test file
 def main(user_input):
     useable_characters = GenerateData.characters
+    useable_characters_index = {x: useable_characters.index(x) for x in useable_characters}
     img_dict = {}
     for char in useable_characters:
         upper = False
         if char.isupper():
             upper = True
-        img_dict["img_{0}".format(char)] = cv2.imread('PAGES/page_{0}.png'.format(char.lower() + "_upper" if upper else char))
+        extra = ""
+        if user_input == "test":
+            extra = "_test"
+        img_dict["img_{0}".format(char)] = cv2.imread('PAGES/page_{0}{1}.png'.format(char.lower() + "_upper" if upper else char, extra))
     """
     For each image opened do 5 things:
     1) Resize image (optional)
@@ -32,7 +36,6 @@ def main(user_input):
     Then set original image to new, modified image
     """
     for image in img_dict:
-        print(image)
         scale = 1
         blur = (3, 3)
         temp_img = img_dict[image]
@@ -138,22 +141,23 @@ def main(user_input):
     characters_dict = {}
     for image in img_dict:
         i = 0
+        print(image[-1])
         for box in boxes_dict[image]:
             i += 1
             # Set a safezone of 3 pixels around the character
             sz = 3
             # Create temp_box list that converts all elements in boxes to integers (from floats).
             temp_box = [int(element) for element in box]
-            characters_dict["character{0}_{1}".format(i, image)] = img_dict[image][temp_box[1] - sz:temp_box[3] + sz, temp_box[0] - sz:temp_box[2] + sz]
+            characters_dict["character{0}_{1}".format(i, image)] = [img_dict[image][temp_box[1] - sz:temp_box[3] + sz, temp_box[0] - sz:temp_box[2] + sz], image[-1]]
 
     # Find character with largest size in both x and y
     max_x = 0
     max_y = 0
     for character in characters_dict:
-        if characters_dict[character].shape[0] > max_y:
-            max_y = characters_dict[character].shape[0]
-        if characters_dict[character].shape[1] > max_x:
-            max_x = characters_dict[character].shape[1]
+        if characters_dict[character][0].shape[0] > max_y:
+            max_y = characters_dict[character][0].shape[0]
+        if characters_dict[character][0].shape[1] > max_x:
+            max_x = characters_dict[character][0].shape[1]
 
     # Resize all characters to be same size as character with largest dimension by adding black space to all sides
 
@@ -167,13 +171,13 @@ def main(user_input):
     for image in characters_dict:
         extra_y = 0
         extra_x = 0
-        if characters_dict[image].shape[0] % 2 == 1:
+        if characters_dict[image][0].shape[0] % 2 == 1:
             extra_y = 1
-        if characters_dict[image].shape[1] % 2 == 1:
+        if characters_dict[image][0].shape[1] % 2 == 1:
             extra_x = 1
-        b_y = int((size - characters_dict[image].shape[0])/2)
-        b_x = int((size - characters_dict[image].shape[1])/2)
-        characters_dict[image] = cv2.copyMakeBorder(characters_dict[image], b_y + extra_y, b_y, b_x + extra_x, b_x, 1, (0, 0, 0))
+        b_y = int((size - characters_dict[image][0].shape[0])/2)
+        b_x = int((size - characters_dict[image][0].shape[1])/2)
+        characters_dict[image][0] = cv2.copyMakeBorder(characters_dict[image][0], b_y + extra_y, b_y, b_x + extra_x, b_x, 1, (0, 0, 0))
 
     length = math.floor(len(characters_dict) / 10)
     remainder = len(characters_dict) % 10
@@ -181,7 +185,7 @@ def main(user_input):
 
     # Create grid of all characters found in original input image
     final_concat_dict = {}
-    resized_chars_copy = np.asarray(list(characters_dict.values()))
+    resized_chars_copy = np.asarray([x[0] for x in list(characters_dict.values())])
 
     character_row = []
     # Make rows of 10 characters
@@ -206,15 +210,17 @@ def main(user_input):
     # If there are extra characters, put them all into the final image, which may be less than 10 rows
     final_concat_dict["final_concat_{}".format(k)] = cv2.vconcat([character_row[x] for x in range(k*10, (k+1)*10)])
 
-    final_img_list = []
-    for image in characters_dict:
-        final_img_list.append(characters_dict[image])
-
-    for image in final_concat_dict:
-        cv2.imshow("image", final_concat_dict[image])
-        cv2.waitKey()
+    final_img_lst = []
+    final_label_lst = []
+    for char in characters_dict:
+        final_img_lst.append(characters_dict[char][0])
+        final_label_lst.append(useable_characters_index[characters_dict[char][1]])
+    print(final_label_lst)
+    # for image in final_concat_dict:
+    #     cv2.imshow("image", final_concat_dict[image])
+    #     cv2.waitKey()
     print(size)
-    return final_img_list
+    return final_img_lst, final_label_lst
 
 
 def store_many_hdf5(images, labels):
@@ -224,11 +230,12 @@ def store_many_hdf5(images, labels):
         images       images array, (N, 32, 32, 3) to be stored
         labels       labels array, (N, 1) to be stored
     """
+
     num_images = len(images)
     if user_input == "train":
-        hdf5_dir = "C:/Users/Truman/Documents/GitHub/MathVision/HDF5/f{0}_characters_y.h5".format(num_images)
+        hdf5_dir = "C:/Users/Truman/Documents/GitHub/MathVision/HDF5/f{0}_characters.h5".format(num_images)
     if user_input == "test":
-        hdf5_dir = "C:/Users/Truman/Documents/GitHub/MathVision/HDF5/f{0}_characters_test_y.h5".format(num_images)
+        hdf5_dir = "C:/Users/Truman/Documents/GitHub/MathVision/HDF5/f{0}_characters_test.h5".format(num_images)
     # Create a new HDF5 file
     file = h5py.File(hdf5_dir, "w")
 
@@ -241,8 +248,8 @@ def store_many_hdf5(images, labels):
 
 if __name__ == "__main__":
     user_input = input("Would you like to train or test?").lower().strip(" ")
-    characters = main(user_input)
-    path = store_many_hdf5(characters, characters)
+    characters, labels = main(user_input)
+    path = store_many_hdf5(characters, labels)
     print("Complete! New HDF5 stored at {0}".format(path))
 
 # Return tuple in main method with label data, which can be obtained before processing from file name or from character_string list

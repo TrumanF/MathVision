@@ -2,8 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="aaf8a22e-0661-4b80-870a-ebca518f2c06" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/Keras.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GenerateData.py" beforeDir="false" afterPath="$PROJECT_DIR$/GenerateData.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HDF5/f119_characters_test.h5" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HDF5/f143_characters_test_y.h5" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HDF5/f383_characters.h5" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HDF5/f383_characters_y.h5" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Main.py" beforeDir="false" afterPath="$PROJECT_DIR$/Main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -52,7 +57,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/Main.py" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/Keras.py" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
@@ -61,7 +66,7 @@
       <recent name="C:\Users\Truman\Documents\GitHub\MathVision" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.Main">
+  <component name="RunManager" selected="Python.Keras">
     <configuration name="GenerateData" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="MathVision" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -76,6 +81,28 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/GenerateData.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Keras" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="MathVision" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="C:\Users\Truman\Anaconda3\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Keras.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -109,6 +136,7 @@
     <list>
       <item itemvalue="Python.GenerateData" />
       <item itemvalue="Python.Main" />
+      <item itemvalue="Python.Keras" />
     </list>
   </component>
   <component name="SvnConfiguration">
@@ -127,7 +155,7 @@
       <workItem from="1582150734795" duration="17163000" />
       <workItem from="1582189928479" duration="30000" />
       <workItem from="1582231109730" duration="11865000" />
-      <workItem from="1582243012831" duration="13971000" />
+      <workItem from="1582243012831" duration="20399000" />
     </task>
     <task id="LOCAL-00001" summary="Reshaping code">
       <created>1582169088588</created>
@@ -164,7 +192,14 @@
       <option name="project" value="LOCAL" />
       <updated>1582256309123</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Added new file to generate training data for keras model.">
+      <created>1582277280296</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1582277280296</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -174,41 +209,42 @@
     <MESSAGE value="Reshaping code" />
     <MESSAGE value="Program has been significantly rewritten to now produce H5FD file with all characters extracted from input image." />
     <MESSAGE value="Can now specify whether you'd like to create training test data for keras model." />
-    <option name="LAST_COMMIT_MESSAGE" value="Can now specify whether you'd like to create training test data for keras model." />
+    <MESSAGE value="Added new file to generate training data for keras model." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added new file to generate training data for keras model." />
   </component>
   <component name="WindowStateProjectService">
-    <state x="414" y="176" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1582274353470">
+    <state x="414" y="176" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1582321564944">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="414" y="176" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1582274353470" />
-    <state x="711" y="324" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1582232252777">
+    <state x="414" y="176" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1582321564944" />
+    <state x="711" y="324" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1582322973888">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="711" y="324" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1582232252777" />
-    <state x="585" y="115" key="CommitChangelistDialog2" timestamp="1582256307742">
+    <state x="711" y="324" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1582322973888" />
+    <state x="585" y="115" key="CommitChangelistDialog2" timestamp="1582277279299">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="585" y="115" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1582256307742" />
-    <state x="740" y="276" key="FileChooserDialogImpl" timestamp="1582274351331">
+    <state x="585" y="115" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1582277279299" />
+    <state x="740" y="276" key="FileChooserDialogImpl" timestamp="1582321563153">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="740" y="276" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1582274351331" />
-    <state width="1877" height="282" key="GridCell.Tab.0.bottom" timestamp="1582277133477">
+    <state x="740" y="276" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1582321563153" />
+    <state width="1877" height="282" key="GridCell.Tab.0.bottom" timestamp="1582323511808">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1582277133477" />
-    <state width="1877" height="282" key="GridCell.Tab.0.center" timestamp="1582277133477">
+    <state width="1877" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1582323511808" />
+    <state width="1877" height="282" key="GridCell.Tab.0.center" timestamp="1582323511808">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1582277133477" />
-    <state width="1877" height="282" key="GridCell.Tab.0.left" timestamp="1582277133477">
+    <state width="1877" height="282" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1582323511808" />
+    <state width="1877" height="282" key="GridCell.Tab.0.left" timestamp="1582323511808">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1582277133477" />
-    <state width="1877" height="282" key="GridCell.Tab.0.right" timestamp="1582277133477">
+    <state width="1877" height="282" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1582323511808" />
+    <state width="1877" height="282" key="GridCell.Tab.0.right" timestamp="1582323511808">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1582277133477" />
+    <state width="1877" height="282" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1582323511808" />
     <state width="1877" height="347" key="GridCell.Tab.1.bottom" timestamp="1582242986761">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -235,7 +271,8 @@
     <state x="623" y="229" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1582014664356" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/MathVision$Main.coverage" NAME="Main Coverage Results" MODIFIED="1582277133471" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/MathVision$Main2.coverage" NAME="GenerateData Coverage Results" MODIFIED="1582277097375" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/MathVision$Keras.coverage" NAME="Keras Coverage Results" MODIFIED="1582323511801" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/MathVision$Main.coverage" NAME="Main Coverage Results" MODIFIED="1582322603577" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/MathVision$Main2.coverage" NAME="GenerateData Coverage Results" MODIFIED="1582322333308" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
