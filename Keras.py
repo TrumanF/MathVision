@@ -4,7 +4,7 @@ from tensorflow import keras
 import numpy as np
 import matplotlib.pyplot as plt
 
-f = h5py.File("C:/Users/Truman/Documents/GitHub/MathVision/HDF5/f12056_characters_y.h5", "r")
+f = h5py.File("C:/Users/Truman/Documents/GitHub/MathVision/HDF5/f12056_characters.h5", "r")
 f_test = h5py.File("C:/Users/Truman/Documents/GitHub/MathVision/HDF5/f6006_characters_test.h5", "r")
 
 dset_labels = f.get("labels").value
@@ -81,7 +81,7 @@ def plot_value_array(i, predictions_array, true_label):
   thisplot[predicted_label].set_color('red')
   thisplot[true_label].set_color('blue')
 
-i = 4555
+i = 1678
 plt.figure(figsize=(6,3))
 plt.subplot(1, 2, 1)
 plot_image(i, predictions[i], test_labels, test_images)
