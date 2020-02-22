@@ -54,8 +54,8 @@ def black_and_white(input_img, scale=1, blur=3):
         Parameters:
     ---------------
     input_img       input image to crop
-    scale           (optional; default set to 1) Sets image scale
-    blur            (optional; default set to 3) Sets blur amount
+    scale           (optional; default=1) Sets image scale
+    blur            (optional; default=3) Sets blur amount
     """
     temp_img = input_img
     temp_img = cv2.resize(temp_img, (round(temp_img.shape[1] * scale), round(temp_img.shape[0] * scale)))
@@ -84,21 +84,74 @@ def crop_image(input_img):
     return cropped_img
 
 
+char_id = 0
+
+
 def extract_characters(input_img, name=None):
+    """ Extracts characters from input image.
+        Parameters:
+        ---------------
+        input_img       input image to crop
+        name            (optional; default=None) Adds the name of the character
+    """
     characters = []
     boxes = find_contours(input_img)
-    i = 0
+    global char_id
     for box in boxes:
-        i += 1
+        char_id += 1
         sz = 3
         # Create temp_box list that converts all elements in boxes to integers (from floats).
         temp_box = [int(element) for element in box]
         character = input_img[temp_box[1] - sz:temp_box[3] + sz, temp_box[0] - sz:temp_box[2] + sz]
         if name is not None:
-            characters.append([character, name[-1]])
+            characters.append([character, name[-1], char_id])
         if name is None:
             characters.append(character)
     return characters
+
+
+size = 0
+
+
+def max_character_size(characters):
+    """ Finds the maximum size of any character in list and sets global size variable.
+        Parameters:
+        ---------------
+        characters      list of characters
+    """
+    max_x = 0
+    max_y = 0
+    global size
+    for character in characters:
+        if character.shape[0] > max_y:
+            max_y = character.shape[0]
+        if character.shape[1] > max_x:
+            max_x = character.shape[1]
+
+    size = max(max_x, max_y)
+    return characters
+
+
+def resize_characters(character):
+    """ Resizes characters in list to match global size.
+        Parameters:
+        ---------------
+        character       image of character
+    """
+    # Find character with largest size in both x and y
+    global size
+    if size % 2 != 0:
+        size += 1
+    extra_y = 0
+    extra_x = 0
+    if character[0].shape[0] % 2 == 1:
+        extra_y = 1
+    if character[0].shape[1] % 2 == 1:
+        extra_x = 1
+    b_y = int((size - character[0].shape[0])/2)
+    b_x = int((size - character[0].shape[1])/2)
+    character[0] = cv2.copyMakeBorder(character[0], b_y + extra_y, b_y, b_x + extra_x, b_x, 1, (0, 0, 0))
+    return character
 
 
 def draw_boxes(input_img, boxes):
@@ -131,8 +184,7 @@ def create_boxes(boxes, image, name):
     f.close()
 
 
-def store_many_hdf5(images, labels):
-    global user_input
+def store_many_hdf5(images, labels, ui=""):
     """ Stores an array of images to HDF5.
         Parameters:
         ---------------
@@ -140,9 +192,9 @@ def store_many_hdf5(images, labels):
         labels       labels array, (N, 1) to be stored
     """
     num_images = len(images)
-    if user_input == "train":
+    if ui == "train":
         hdf5_dir = "C:/Users/Truman/Documents/GitHub/MathVision/HDF5/f{0}_characters.h5".format(num_images)
-    elif user_input == "test":
+    elif ui == "test":
         hdf5_dir = "C:/Users/Truman/Documents/GitHub/MathVision/HDF5/f{0}_characters_test.h5".format(num_images)
     else:
         hdf5_dir = "C:/Users/Truman/Documents/GitHub/MathVision/HDF5/f{0}_characters.h5".format(num_images)
@@ -153,7 +205,7 @@ def store_many_hdf5(images, labels):
     file.create_dataset("images", np.shape(images), h5py.h5t.STD_U8BE, data=images)
     file.create_dataset("labels", np.shape(labels), h5py.h5t.STD_U8BE, data=labels)
     file.close()
-    return hdf5_dir
+    print("Complete! New HDF5 stored at {0}".format(hdf5_dir))
 
 
 def main():
@@ -183,16 +235,6 @@ def main():
         boxes_dict[image] = find_contours(img_dict[image])
 
     characters_dict = {}
-    # for image in img_dict:
-    #     i = 0
-    #     for box in boxes_dict[image]:
-    #         i += 1
-    #         # Set a safe-zone of 3 pixels around the character
-    #         sz = 3
-    #         # Create temp_box list that converts all elements in boxes to integers (from floats).
-    #         temp_box = [int(element) for element in box]
-    #         characters_dict["character{0}_{1}".format(i, image)] = [img_dict[image][temp_box[1] - sz:temp_box[3] + sz,
-    #                                                                 temp_box[0] - sz:temp_box[2] + sz], image[-1]]
     for image in img_dict:
         i = 0
         characters = extract_characters(img_dict[image], image)
@@ -200,34 +242,10 @@ def main():
             i += 1
             characters_dict["character{0}_{1}".format(i, image)] = char
 
-    # Find character with largest size in both x and y
-    max_x = 0
-    max_y = 0
-    for character in characters_dict:
-        if characters_dict[character][0].shape[0] > max_y:
-            max_y = characters_dict[character][0].shape[0]
-        if characters_dict[character][0].shape[1] > max_x:
-            max_x = characters_dict[character][0].shape[1]
+    max_character_size([x[0] for x in list(characters_dict.values())])
 
-    # Resize all characters to be same size as character with largest dimension by adding black space to all sides
-
-    # For this to work with current keras model, the size has to be identical between characters, so size must be set
-    # to a constant, like:
-    # size = 32
-
-    size = max(max_x, max_y)
-    if size % 2 != 0:
-        size += 1
-    for image in characters_dict:
-        extra_y = 0
-        extra_x = 0
-        if characters_dict[image][0].shape[0] % 2 == 1:
-            extra_y = 1
-        if characters_dict[image][0].shape[1] % 2 == 1:
-            extra_x = 1
-        b_y = int((size - characters_dict[image][0].shape[0])/2)
-        b_x = int((size - characters_dict[image][0].shape[1])/2)
-        characters_dict[image][0] = cv2.copyMakeBorder(characters_dict[image][0], b_y + extra_y, b_y, b_x + extra_x, b_x, 1, (0, 0, 0))
+    for char in characters_dict:
+        characters_dict[char] = resize_characters(characters_dict[char])
 
     length = math.floor(len(characters_dict) / 10)
     remainder = len(characters_dict) % 10
@@ -235,6 +253,7 @@ def main():
 
     # Create grid of all characters found in original input image
     final_concat_dict = {}
+
     resized_chars_copy = np.asarray([x[0] for x in list(characters_dict.values())])
 
     character_row = []
@@ -266,12 +285,9 @@ def main():
     for char in characters_dict:
         final_img_lst.append(characters_dict[char][0])
         final_label_lst.append(usable_characters_index[characters_dict[char][1]])
-    # for image in final_concat_dict:
-    #     cv2.imshow("image", final_concat_dict[image])
-    #     cv2.waitKey()
-
-    path = store_many_hdf5(final_img_lst, final_label_lst)
-    print("Complete! New HDF5 stored at {0}".format(path))
-
+    for image in final_concat_dict:
+        cv2.imshow("image", final_concat_dict[image])
+        cv2.waitKey()
+    store_many_hdf5(final_img_lst, final_label_lst, "train")
 
 main()

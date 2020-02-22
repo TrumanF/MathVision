@@ -5,7 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 f = h5py.File("C:/Users/Truman/Documents/GitHub/MathVision/HDF5/f12056_characters.h5", "r")
-f_test = h5py.File("C:/Users/Truman/Documents/GitHub/MathVision/HDF5/f6006_characters_test.h5", "r")
+f_test = h5py.File("C:/Users/Truman/Documents/GitHub/MathVision/HDF5/f15_characters.h5", "r")
 
 dset_labels = f.get("labels").value
 dset_images = f.get("images").value

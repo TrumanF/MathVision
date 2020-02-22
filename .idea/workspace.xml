@@ -2,12 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="aaf8a22e-0661-4b80-870a-ebca518f2c06" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/CreateInput.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/FormatData.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GenerateData.py" beforeDir="false" afterPath="$PROJECT_DIR$/GenerateData.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CreateInput.py" beforeDir="false" afterPath="$PROJECT_DIR$/CreateInput.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FormatData.py" beforeDir="false" afterPath="$PROJECT_DIR$/FormatData.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Keras.py" beforeDir="false" afterPath="$PROJECT_DIR$/Keras.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Main.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/testimages/equation1.png" beforeDir="false" afterPath="$PROJECT_DIR$/testimages/equation1.png" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -177,7 +175,8 @@
       <workItem from="1582150734795" duration="17163000" />
       <workItem from="1582189928479" duration="30000" />
       <workItem from="1582231109730" duration="11865000" />
-      <workItem from="1582243012831" duration="28832000" />
+      <workItem from="1582243012831" duration="33928000" />
+      <workItem from="1582355761620" duration="8473000" />
     </task>
     <task id="LOCAL-00001" summary="Reshaping code">
       <created>1582169088588</created>
@@ -228,7 +227,14 @@
       <option name="project" value="LOCAL" />
       <updated>1582323574478</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Made FormatData.py more modular by taking code from main() and creating methods, so other files may use same methods.">
+      <created>1582347056914</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1582347056914</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -240,41 +246,42 @@
     <MESSAGE value="Can now specify whether you'd like to create training test data for keras model." />
     <MESSAGE value="Added new file to generate training data for keras model." />
     <MESSAGE value="Added a labels list to saved .h5 output by Main.py&#10;Added Keras.py to begin creating learning model for characters" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added a labels list to saved .h5 output by Main.py&#10;Added Keras.py to begin creating learning model for characters" />
+    <MESSAGE value="Made FormatData.py more modular by taking code from main() and creating methods, so other files may use same methods." />
+    <option name="LAST_COMMIT_MESSAGE" value="Made FormatData.py more modular by taking code from main() and creating methods, so other files may use same methods." />
   </component>
   <component name="WindowStateProjectService">
-    <state x="414" y="176" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1582340641797">
+    <state x="414" y="176" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1582350313217">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="414" y="176" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1582340641797" />
+    <state x="414" y="176" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1582350313217" />
     <state x="711" y="324" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1582322973888">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="711" y="324" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1582322973888" />
-    <state x="585" y="115" key="CommitChangelistDialog2" timestamp="1582323573434">
+    <state x="585" y="115" key="CommitChangelistDialog2" timestamp="1582347055126">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="585" y="115" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1582323573434" />
+    <state x="585" y="115" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1582347055126" />
     <state x="740" y="276" key="FileChooserDialogImpl" timestamp="1582340639905">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="740" y="276" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1582340639905" />
-    <state width="1877" height="381" key="GridCell.Tab.0.bottom" timestamp="1582346807582">
+    <state width="1877" height="219" key="GridCell.Tab.0.bottom" timestamp="1582363886640">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="381" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1582346807582" />
-    <state width="1877" height="381" key="GridCell.Tab.0.center" timestamp="1582346807582">
+    <state width="1877" height="219" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1582363886640" />
+    <state width="1877" height="219" key="GridCell.Tab.0.center" timestamp="1582363886640">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="381" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1582346807582" />
-    <state width="1877" height="381" key="GridCell.Tab.0.left" timestamp="1582346807582">
+    <state width="1877" height="219" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1582363886640" />
+    <state width="1877" height="219" key="GridCell.Tab.0.left" timestamp="1582363886640">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="381" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1582346807582" />
-    <state width="1877" height="381" key="GridCell.Tab.0.right" timestamp="1582346807582">
+    <state width="1877" height="219" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1582363886640" />
+    <state width="1877" height="219" key="GridCell.Tab.0.right" timestamp="1582363886640">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="381" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1582346807582" />
+    <state width="1877" height="219" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1582363886640" />
     <state width="1877" height="347" key="GridCell.Tab.1.bottom" timestamp="1582242986761">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -291,19 +298,20 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1877" height="347" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1582242986761" />
-    <state x="655" y="345" key="com.intellij.ide.util.TipDialog" timestamp="1582189932325">
+    <state x="655" y="345" key="com.intellij.ide.util.TipDialog" timestamp="1582355768170">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="655" y="345" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1582189932325" />
+    <state x="655" y="345" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1582355768170" />
     <state x="623" y="229" width="672" height="678" key="search.everywhere.popup" timestamp="1582014664356">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="623" y="229" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1582014664356" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/MathVision$Keras.coverage" NAME="Keras Coverage Results" MODIFIED="1582324173129" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/MathVision$Main.coverage" NAME="FormatData Coverage Results" MODIFIED="1582346807576" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/MathVision$Keras.coverage" NAME="Keras Coverage Results" MODIFIED="1582355389788" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/MathVision$FormatData.coverage" NAME="FormatData Coverage Results" MODIFIED="1582363886630" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/MathVision$Main.coverage" NAME="FormatData Coverage Results" MODIFIED="1582355339542" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/MathVision$Main2.coverage" NAME="GenerateData Coverage Results" MODIFIED="1582322333308" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/MathVision$CreateInput.coverage" NAME="CreateInput Coverage Results" MODIFIED="1582342424405" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/MathVision$CreateInput.coverage" NAME="CreateInput Coverage Results" MODIFIED="1582355772434" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
