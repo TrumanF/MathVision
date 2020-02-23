@@ -3,7 +3,7 @@ import numpy as np
 import math
 import h5py
 import GenerateData
-
+from tqdm import tqdm
 user_input = ""
 
 
@@ -106,11 +106,8 @@ def extract_characters(input_img, name=None):
         if name is not None:
             characters.append([character, name[-1], char_id])
         if name is None:
-            characters.append(character)
+            characters.append([character, char_id])
     return characters
-
-
-size = 0
 
 
 def max_character_size(characters):
@@ -121,25 +118,23 @@ def max_character_size(characters):
     """
     max_x = 0
     max_y = 0
-    global size
     for character in characters:
-        if character.shape[0] > max_y:
-            max_y = character.shape[0]
-        if character.shape[1] > max_x:
-            max_x = character.shape[1]
+        if character[0].shape[0] > max_y:
+            max_y = character[0].shape[0]
+        if character[0].shape[1] > max_x:
+            max_x = character[0].shape[1]
 
     size = max(max_x, max_y)
-    return characters
+    return size
 
 
-def resize_characters(character):
-    """ Resizes characters in list to match global size.
+def resize_characters(character, size):
+    """ Resizes character to match global size
         Parameters:
         ---------------
         character       image of character
     """
     # Find character with largest size in both x and y
-    global size
     if size % 2 != 0:
         size += 1
     extra_y = 0
@@ -151,6 +146,7 @@ def resize_characters(character):
     b_y = int((size - character[0].shape[0])/2)
     b_x = int((size - character[0].shape[1])/2)
     character[0] = cv2.copyMakeBorder(character[0], b_y + extra_y, b_y, b_x + extra_x, b_x, 1, (0, 0, 0))
+    character[0] = cv2.resize(character[0], (32, 32))
     return character
 
 
@@ -226,39 +222,58 @@ def main():
 
     for image in img_dict:
         img_dict[image] = black_and_white(img_dict[image])
-
+    print("Step 1")
+    loop1 = tqdm(total=len(img_dict), position=0, leave=False)
     boxes_dict = {}
     for image in img_dict:
+        loop1.set_description("Running...")
+        loop1.update(1)
         # Crop image
         img_dict[image] = crop_image(img_dict[image])
         # Find contours for new cropped image
         boxes_dict[image] = find_contours(img_dict[image])
-
+    loop1.close()
+    print("Step 1 Complete")
+    print("Step 2")
+    loop2 = tqdm(total=len(img_dict), position=0, leave=False)
     characters_dict = {}
     for image in img_dict:
+        loop2.set_description("Running...")
+        loop2.update(1)
         i = 0
         characters = extract_characters(img_dict[image], image)
         for char in characters:
             i += 1
             characters_dict["character{0}_{1}".format(i, image)] = char
-
-    max_character_size([x[0] for x in list(characters_dict.values())])
-
+    loop2.close()
+    print("Step 2 Complete")
+    print("Step 3")
+    size = max_character_size([x for x in characters_dict.values()])
+    loop3 = tqdm(total=len(characters_dict), position=0, leave=False)
     for char in characters_dict:
-        characters_dict[char] = resize_characters(characters_dict[char])
+        loop3.set_description("Running...")
+        loop3.update(1)
+        characters_dict[char] = resize_characters(characters_dict[char], size)
+    loop3.close()
+    print("Step 3 Complete")
+    print("Step 4")
+
+    true_size = list(characters_dict.values())[0][0].shape[0]
 
     length = math.floor(len(characters_dict) / 10)
     remainder = len(characters_dict) % 10
-    blank_img = np.zeros((1, size, size), dtype="uint8")
+    blank_img = np.zeros((1, true_size, true_size), dtype="uint8")
 
     # Create grid of all characters found in original input image
     final_concat_dict = {}
 
     resized_chars_copy = np.asarray([x[0] for x in list(characters_dict.values())])
-
     character_row = []
+    loop4 = tqdm(total=length, position=0, leave=False)
     # Make rows of 10 characters
     for i in range(length):
+        loop4.set_description("Running...")
+        loop4.update(1)
         h_concat = cv2.hconcat(resized_chars_copy[10*i:10*(i+1)])
         # Check if this is the last row to create
         if i == length - 1 and remainder != 0:
@@ -270,6 +285,9 @@ def main():
             character_row.append(h_concat_last)
             break
         character_row.append(h_concat)
+    loop4.close()
+    print("Step 4 Complete")
+    print("Step 5")
     # Produce final grids with 10 items in each row and column
     k = -1
     for row in range(1, len(character_row)+1):
@@ -279,15 +297,22 @@ def main():
                 [character_row[x] for x in range(k*10, (k+1)*10)])
     # If there are extra characters, put them all into the final image, which may be less than 10 rows
     final_concat_dict["final_concat_{}".format(k)] = cv2.vconcat([character_row[x] for x in range(k*10, (k+1)*10)])
-
+    print("Step 5 Complete")
+    print("Step 6")
+    loop5 = tqdm(total=len(characters_dict), position=0, leave=False)
     final_img_lst = []
     final_label_lst = []
     for char in characters_dict:
+        loop5.set_description("Running...")
+        loop5.update(1)
         final_img_lst.append(characters_dict[char][0])
         final_label_lst.append(usable_characters_index[characters_dict[char][1]])
-    for image in final_concat_dict:
-        cv2.imshow("image", final_concat_dict[image])
-        cv2.waitKey()
+    loop5.close()
+    print("Step 6 Complete")
+    # for image in final_concat_dict:
+    #     cv2.imshow("image", final_concat_dict[image])
+    #     cv2.waitKey()
+    print("Saving images...")
     store_many_hdf5(final_img_lst, final_label_lst, "train")
 
 main()

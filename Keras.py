@@ -4,8 +4,8 @@ from tensorflow import keras
 import numpy as np
 import matplotlib.pyplot as plt
 
-f = h5py.File("C:/Users/Truman/Documents/GitHub/MathVision/HDF5/f12056_characters.h5", "r")
-f_test = h5py.File("C:/Users/Truman/Documents/GitHub/MathVision/HDF5/f15_characters.h5", "r")
+f = h5py.File("C:/Users/Truman/Documents/GitHub/MathVision/HDF5/f72886_characters.h5", "r")
+f_test = h5py.File("C:/Users/Truman/Documents/GitHub/MathVision/HDF5/f15_characters_test.h5", "r")
 
 dset_labels = f.get("labels").value
 dset_images = f.get("images").value
@@ -30,7 +30,7 @@ except OSError:
 
 if new_model:
     model = keras.Sequential([
-        keras.layers.Flatten(input_shape=(36, 36)),
+        keras.layers.Flatten(input_shape=(32, 32)),
         keras.layers.Dense(128, activation='relu'),
         keras.layers.Dense(77)
     ])
@@ -81,18 +81,11 @@ def plot_value_array(i, predictions_array, true_label):
   thisplot[predicted_label].set_color('red')
   thisplot[true_label].set_color('blue')
 
-i = 1678
-plt.figure(figsize=(6,3))
-plt.subplot(1, 2, 1)
-plot_image(i, predictions[i], test_labels, test_images)
-plt.subplot(1, 2, 2)
-plot_value_array(i, predictions[i],  test_labels)
-plt.show()
+for i in range(16):
+    plt.figure(figsize=(12, 3))
+    plt.subplot(1, 2, 1)
+    plot_image(i, predictions[i], test_labels, test_images)
+    plt.subplot(1, 2, 2)
+    plot_value_array(i, predictions[i],  test_labels)
+    plt.show()
 
-i = 4789
-plt.figure(figsize=(6,3))
-plt.subplot(1, 2, 1)
-plot_image(i, predictions[i], test_labels, test_images)
-plt.subplot(1, 2, 2)
-plot_value_array(i, predictions[i],  test_labels)
-plt.show()

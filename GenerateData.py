@@ -14,8 +14,8 @@ def add_text(base, char, test):
     img = Image.fromarray(base)
     draw = ImageDraw.Draw(img)
     font = ImageFont.truetype("TFF/Roboto-MediumItalic.ttf", 30)
-    for i in range(10):
-        draw.text((5, i*40), current_char * 16, font=font, fill=0)
+    for i in range(30):
+        draw.text((5, i*40), current_char * 32, font=font, fill=0)
     img = np.array(img)
     upper = False
     print(char)
@@ -35,8 +35,7 @@ def display_image(img):
 
 def main(test):
     for char in characters:
-        add_text(create_base(500), char, test)
-
+        add_text(create_base(1250), char, test)
 
 if __name__ == "__main__":
-    main(True)
+    main(False)
