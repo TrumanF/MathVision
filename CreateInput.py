@@ -17,7 +17,7 @@ size = FormatData.max_character_size(characters)
 
 for char in characters:
     char = FormatData.resize_characters(char, size)
-    cv2.imshow("char", char[0])
+    cv2.imshow(str(char[1]), char[0])
     cv2.waitKey()
     images.append(char[0])
 for char in "=zyx++01761)32(":

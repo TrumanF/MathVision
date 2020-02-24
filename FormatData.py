@@ -91,11 +91,15 @@ def extract_characters(input_img, name=None):
     """ Extracts characters from input image.
         Parameters:
         ---------------
-        input_img       input image to crop
+        input_img       input image to extract characters from
         name            (optional; default=None) Adds the name of the character
     """
+    cv2.imshow("image", input_img)
+    cv2.waitKey()
     characters = []
     boxes = find_contours(input_img)
+    img_height = input_img.shape[0]
+    center_line = round(img_height/2)
     global char_id
     for box in boxes:
         char_id += 1
@@ -103,10 +107,16 @@ def extract_characters(input_img, name=None):
         # Create temp_box list that converts all elements in boxes to integers (from floats).
         temp_box = [int(element) for element in box]
         character = input_img[temp_box[1] - sz:temp_box[3] + sz, temp_box[0] - sz:temp_box[2] + sz]
+        character_size = temp_box[3] - temp_box[1]
+        threshold = temp_box[1] + round(character_size * .75)
+        if threshold < round(img_height/2):
+            expo = True
+        else:
+            expo = False
         if name is not None:
-            characters.append([character, name[-1], char_id])
+            characters.append([character, name[-1], char_id, expo])
         if name is None:
-            characters.append([character, char_id])
+            characters.append([character, char_id, expo])
     return characters
 
 
@@ -315,4 +325,3 @@ def main():
     print("Saving images...")
     store_many_hdf5(final_img_lst, final_label_lst, "train")
 
-main()
