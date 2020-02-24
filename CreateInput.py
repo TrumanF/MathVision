@@ -5,6 +5,8 @@ import h5py
 import os
 import GenerateData
 
+# TODO: Add label generation for input image.
+
 img = cv2.imread("testimages/equation1.png")
 
 img = FormatData.black_and_white(img)
@@ -20,7 +22,9 @@ for char in characters:
     cv2.imshow(str(char[1]), char[0])
     cv2.waitKey()
     images.append(char[0])
+# Temporary label generator for equation1
 for char in "=zyx++01761)32(":
     number = GenerateData.characters.index(char)
     labels.append(number)
+
 FormatData.store_many_hdf5(images, labels, "test")

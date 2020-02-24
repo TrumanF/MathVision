@@ -5,6 +5,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CreateInput.py" beforeDir="false" afterPath="$PROJECT_DIR$/CreateInput.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FormatData.py" beforeDir="false" afterPath="$PROJECT_DIR$/FormatData.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GenerateData.py" beforeDir="false" afterPath="$PROJECT_DIR$/GenerateData.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,7 +54,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/CreateInput.py" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="settings.editor.selected.configurable" value="preferences.toDoOptions" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -61,7 +62,7 @@
       <recent name="C:\Users\Truman\Documents\GitHub\MathVision" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.CreateInput">
+  <component name="RunManager" selected="Python.FormatData">
     <configuration name="CreateInput" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="MathVision" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -175,7 +176,7 @@
       <workItem from="1582231109730" duration="11865000" />
       <workItem from="1582243012831" duration="33928000" />
       <workItem from="1582355761620" duration="8519000" />
-      <workItem from="1582435024394" duration="10797000" />
+      <workItem from="1582435024394" duration="11866000" />
     </task>
     <task id="LOCAL-00001" summary="Reshaping code">
       <created>1582169088588</created>
@@ -247,7 +248,14 @@
       <option name="project" value="LOCAL" />
       <updated>1582443097056</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Adjust extract_characters() in FormatData.py to add a variable to character list, expo. Expo will be true or false depends on whenever the input character in the image is detected as being an exponent (based on it's position and size).">
+      <created>1582536518922</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1582536518922</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -262,7 +270,8 @@
     <MESSAGE value="Made FormatData.py more modular by taking code from main() and creating methods, so other files may use same methods." />
     <MESSAGE value="Made FormatData.py more modular by taking code from main() and creating methods, so other files may use same methods.&#10;extract_characters()&#10;max_character_size()&#10;resize_characters()" />
     <MESSAGE value="Adjusted resize_characters() in FormatData.py to resize all characters, after black space has been added, to be 32x32. This is to ensure consistency for the keras model. &#10;Added progress bars to FormatData, so there is visual representation for long operations." />
-    <option name="LAST_COMMIT_MESSAGE" value="Adjusted resize_characters() in FormatData.py to resize all characters, after black space has been added, to be 32x32. This is to ensure consistency for the keras model. &#10;Added progress bars to FormatData, so there is visual representation for long operations." />
+    <MESSAGE value="Adjust extract_characters() in FormatData.py to add a variable to character list, expo. Expo will be true or false depends on whenever the input character in the image is detected as being an exponent (based on it's position and size)." />
+    <option name="LAST_COMMIT_MESSAGE" value="Adjust extract_characters() in FormatData.py to add a variable to character list, expo. Expo will be true or false depends on whenever the input character in the image is detected as being an exponent (based on it's position and size)." />
   </component>
   <component name="WindowStateProjectService">
     <state x="414" y="176" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1582350313217">
@@ -277,30 +286,30 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="690" y="268" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1582442744995" />
-    <state x="356" y="115" key="CommitChangelistDialog2" timestamp="1582536446606">
+    <state x="0" y="115" key="CommitChangelistDialog2" timestamp="1582537621742">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="356" y="115" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1582536446606" />
+    <state x="0" y="115" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1582537621742" />
     <state x="740" y="276" key="FileChooserDialogImpl" timestamp="1582340639905">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="740" y="276" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1582340639905" />
-    <state width="1877" height="236" key="GridCell.Tab.0.bottom" timestamp="1582536382058">
+    <state width="1877" height="236" key="GridCell.Tab.0.bottom" timestamp="1582537441906">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="236" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1582536382058" />
-    <state width="1877" height="236" key="GridCell.Tab.0.center" timestamp="1582536382057">
+    <state width="1877" height="236" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1582537441906" />
+    <state width="1877" height="236" key="GridCell.Tab.0.center" timestamp="1582537441906">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="236" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1582536382057" />
-    <state width="1877" height="236" key="GridCell.Tab.0.left" timestamp="1582536382057">
+    <state width="1877" height="236" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1582537441906" />
+    <state width="1877" height="236" key="GridCell.Tab.0.left" timestamp="1582537441906">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="236" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1582536382057" />
-    <state width="1877" height="236" key="GridCell.Tab.0.right" timestamp="1582536382057">
+    <state width="1877" height="236" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1582537441906" />
+    <state width="1877" height="236" key="GridCell.Tab.0.right" timestamp="1582537441906">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="236" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1582536382057" />
+    <state width="1877" height="236" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1582537441906" />
     <state width="1877" height="347" key="GridCell.Tab.1.bottom" timestamp="1582439308876">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -317,6 +326,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1877" height="347" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1582439308876" />
+    <state x="461" y="163" key="SettingsEditor" timestamp="1582537425394">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="461" y="163" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1582537425394" />
     <state x="655" y="345" key="com.intellij.ide.util.TipDialog" timestamp="1582435024331">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -329,9 +342,9 @@
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/MathVision$GenerateData.coverage" NAME="GenerateData Coverage Results" MODIFIED="1582440552168" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/MathVision$Keras.coverage" NAME="Keras Coverage Results" MODIFIED="1582534827387" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/MathVision$FormatData.coverage" NAME="FormatData Coverage Results" MODIFIED="1582442449049" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/MathVision$FormatData.coverage" NAME="FormatData Coverage Results" MODIFIED="1582536711265" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/MathVision$Main.coverage" NAME="FormatData Coverage Results" MODIFIED="1582355339542" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/MathVision$Main2.coverage" NAME="GenerateData Coverage Results" MODIFIED="1582322333308" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/MathVision$CreateInput.coverage" NAME="CreateInput Coverage Results" MODIFIED="1582536382047" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/MathVision$CreateInput.coverage" NAME="CreateInput Coverage Results" MODIFIED="1582536695637" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

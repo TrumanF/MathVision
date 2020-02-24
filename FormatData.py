@@ -6,10 +6,15 @@ import GenerateData
 from tqdm import tqdm
 user_input = ""
 
+# TODO: Organize code! Make more readable. Add comments to all methods and in main() to describe code.
+# TODO: (???) Make each loop in main() an object, instead of calling 6 different loops.
+
 
 # Get contours of characters in image
 # Iterate through each contour and draw a bounding rectangle
 # Create 'boxes' list to store rectangles created
+# TODO: Add support for roots and line-fractions.
+#   Rework detection process to allow awkward characters to be more easily detected. I.E. (%).
 def find_contours(input_img):
     """ Finds contours of input image using cv2.findContours(). Returns boxes created.
     Parameters:
@@ -160,6 +165,7 @@ def resize_characters(character, size):
     return character
 
 
+# Currently unused
 def draw_boxes(input_img, boxes):
     """ Draws rectangles on input image, given the box data of that image. Returns new modified image.
     Parameters:
@@ -174,6 +180,7 @@ def draw_boxes(input_img, boxes):
     return temp_img
 
 
+# Currently unused
 def create_boxes(boxes, image, name):
     """ Creates boxes for given input image and writes them to a .box file.
     Parameters:
@@ -325,3 +332,5 @@ def main():
     print("Saving images...")
     store_many_hdf5(final_img_lst, final_label_lst, "train")
 
+if __name__ == '__main__':
+    main()

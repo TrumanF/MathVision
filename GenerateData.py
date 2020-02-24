@@ -3,6 +3,9 @@ import cv2
 import numpy as np
 characters = [x for x in '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ#$()+,-.:=[]^{}']
 
+# TODO: Add comments to all methods to describe code.
+# TODO: Add generation of images with text of any amount of fonts, have them split up into multiple images
+
 
 def create_base(size):
     base = np.full((size, size), 255, dtype="uint8")
@@ -36,6 +39,7 @@ def display_image(img):
 def main(test):
     for char in characters:
         add_text(create_base(1250), char, test)
+
 
 if __name__ == "__main__":
     main(False)
