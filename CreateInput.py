@@ -7,7 +7,7 @@ import GenerateData
 
 # TODO: Add label generation for input image.
 
-img = cv2.imread("testimages/equation1.png")
+img = cv2.imread("testimages/arithmetic1.png")
 
 img = FormatData.black_and_white(img)
 img = FormatData.crop_image(img)
@@ -23,7 +23,7 @@ for char in characters:
     cv2.waitKey()
     images.append(char[0])
 # Temporary label generator for equation1
-for char in "=zyx++01761)32(":
+for char in "6+7+21":
     number = GenerateData.characters.index(char)
     labels.append(number)
 

@@ -24,21 +24,24 @@ def find_contours(input_img):
     contours, hierarchy = cv2.findContours(input_img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_TC89_KCOS)
     boxes = np.zeros((len(contours), 4))
     j = 0
+    # Loop through each contour cv2.findContours found
     for c in contours:
         j += 1
         added = False
+        # Set coordinates of the bounding rectangle of each contour
         (x, y, w, h) = cv2.boundingRect(c)
         for i in range(len(boxes)):
-            # Check if there is another rectangle that is somewhat above it (within 20 pixels) and add them as the
+            # Check if there is another contour that is somewhat above it (within 15 pixels) and add them as the
             # same rectangle
             try:
-                if boxes[i][0] - 5 <= x <= boxes[i][0] + 5 and boxes[i][1] - 15 <= y <= boxes[i][1] + 15:
+                if boxes[i][0] - 1 <= x <= boxes[i][0] + 1 and boxes[i][1] - 12 <= y <= boxes[i][1] + 12:
                     boxes[i] = [min(x, boxes[i][0]), min(y, boxes[i][1]), max(x + h, boxes[i][2]), max(y + h,
                                                                                                        boxes[i][3])]
                     boxes.resize((boxes.shape[0]-1, 4))
                     added = True
                     j -= 1
                     break
+            # Except IndexError on first go through this loop, because there will be no items in the list
             except IndexError:
                 continue
 
@@ -63,10 +66,15 @@ def black_and_white(input_img, scale=1, blur=3):
     blur            (optional; default=3) Sets blur amount
     """
     temp_img = input_img
+    # Step 1
     temp_img = cv2.resize(temp_img, (round(temp_img.shape[1] * scale), round(temp_img.shape[0] * scale)))
+    # Step 2
     temp_img_blur = cv2.GaussianBlur(temp_img, (blur, blur), 0)
+    # Step 3
     temp_img_gray = cv2.cvtColor(temp_img_blur, cv2.COLOR_BGR2GRAY)
+    # Step 4
     (thresh, temp_img_baw) = cv2.threshold(temp_img_gray, 127, 255, cv2.THRESH_BINARY)
+    # Step 5
     temp_img_inv = cv2.bitwise_not(temp_img_baw)
     return temp_img_inv
 
@@ -81,10 +89,12 @@ def crop_image(input_img):
     """
     contours = find_contours(input_img)
     sz = 3
+    # Find maximum bounding coordinates
     left = int(np.min(contours[:, 0])) - sz
     top = int(np.min(contours[:, 1])) - sz
     right = int(np.max(contours[:, 2])) + sz
     bottom = int(np.max(contours[:, 3])) + sz
+    # Crop based on coordinates found
     cropped_img = input_img[top:bottom, left:right]
     return cropped_img
 
@@ -92,6 +102,7 @@ def crop_image(input_img):
 char_id = 0
 
 
+# TODO: (???) Add sorting by row
 def extract_characters(input_img, name=None):
     """ Extracts characters from input image.
         Parameters:
@@ -99,21 +110,27 @@ def extract_characters(input_img, name=None):
         input_img       input image to extract characters from
         name            (optional; default=None) Adds the name of the character
     """
-    cv2.imshow("image", input_img)
-    cv2.waitKey()
     characters = []
+    # Create list of all bounding boxes of characters
     boxes = find_contours(input_img)
+    # Sort character by x-value, so the list is ordered left to right
+    boxes = boxes[boxes[:, 0].argsort()]
+    print(boxes)
+    # Get height of image
     img_height = input_img.shape[0]
-    center_line = round(img_height/2)
     global char_id
     for box in boxes:
         char_id += 1
         sz = 3
         # Create temp_box list that converts all elements in boxes to integers (from floats).
         temp_box = [int(element) for element in box]
+        # Crop image to match it's bounding box + the safe-zone constant
         character = input_img[temp_box[1] - sz:temp_box[3] + sz, temp_box[0] - sz:temp_box[2] + sz]
+        # Find character height
         character_size = temp_box[3] - temp_box[1]
+        # Create a threshold to see where 75% of the character is, in the image
         threshold = temp_box[1] + round(character_size * .75)
+        # If the threshold (75% of the image) is above the threshold, mark it as being an exponent
         if threshold < round(img_height/2):
             expo = True
         else:
@@ -154,6 +171,7 @@ def resize_characters(character, size):
         size += 1
     extra_y = 0
     extra_x = 0
+    # If the size isn't an even number, round it up to the nearest one
     if character[0].shape[0] % 2 == 1:
         extra_y = 1
     if character[0].shape[1] % 2 == 1:
@@ -331,6 +349,7 @@ def main():
     #     cv2.waitKey()
     print("Saving images...")
     store_many_hdf5(final_img_lst, final_label_lst, "train")
+
 
 if __name__ == '__main__':
     main()

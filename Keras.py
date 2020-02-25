@@ -4,8 +4,20 @@ from tensorflow import keras
 import numpy as np
 import matplotlib.pyplot as plt
 
+# TODO: Adjust learning model to have a better response to exponents
+
+
+def make_predictions(input_img):
+    probability_model = tf.keras.Sequential([model,
+                                             tf.keras.layers.Softmax()])
+    predictions = probability_model.predict(input_img)
+    predictions_list = []
+    for predict in predictions:
+        predictions_list.append(class_names[np.argmax(predict)])
+    return predictions_list
+
 f = h5py.File("C:/Users/Truman/Documents/GitHub/MathVision/HDF5/f72886_characters.h5", "r")
-f_test = h5py.File("C:/Users/Truman/Documents/GitHub/MathVision/HDF5/f15_characters_test.h5", "r")
+f_test = h5py.File("C:/Users/Truman/Documents/GitHub/MathVision/HDF5/f6_characters_test.h5", "r")
 
 dset_labels = f.get("labels").value
 dset_images = f.get("images").value
@@ -43,11 +55,8 @@ if new_model:
 
     model.save("C:/Users/Truman/Documents/GitHub/MathVision/MODEL/Model1.h5")
 
-probability_model = tf.keras.Sequential([model,
-                                         tf.keras.layers.Softmax()])
-predictions = probability_model.predict(test_images)
 
-
+print(make_predictions(test_images))
 
 def plot_image(i, predictions_array, true_label, img):
   predictions_array, true_label, img = predictions_array, true_label[i], img[i]
@@ -68,7 +77,6 @@ def plot_image(i, predictions_array, true_label, img):
                                 class_names[true_label]),
                                 color=color)
 
-
 def plot_value_array(i, predictions_array, true_label):
   predictions_array, true_label = predictions_array, true_label[i]
   plt.grid(False)
@@ -81,11 +89,13 @@ def plot_value_array(i, predictions_array, true_label):
   thisplot[predicted_label].set_color('red')
   thisplot[true_label].set_color('blue')
 
-for i in range(16):
-    plt.figure(figsize=(12, 3))
-    plt.subplot(1, 2, 1)
+probability_model = tf.keras.Sequential([model,
+                                         tf.keras.layers.Softmax()])
+predictions = probability_model.predict(test_images)
+for i in range(6):
+    plt.figure(figsize=(6,3))
+    plt.subplot(1,2,1)
     plot_image(i, predictions[i], test_labels, test_images)
-    plt.subplot(1, 2, 2)
+    plt.subplot(1,2,2)
     plot_value_array(i, predictions[i],  test_labels)
     plt.show()
-
