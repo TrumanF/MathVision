@@ -6,7 +6,6 @@ import GenerateData
 from tqdm import tqdm
 user_input = ""
 
-# TODO: Organize code! Make more readable. Add comments to all methods and in main() to describe code.
 # TODO: (???) Make each loop in main() an object, instead of calling 6 different loops.
 
 
@@ -34,9 +33,10 @@ def find_contours(input_img):
             # Check if there is another contour that is somewhat above it (within 15 pixels) and add them as the
             # same rectangle
             try:
-                if boxes[i][0] - 1 <= x <= boxes[i][0] + 1 and boxes[i][1] - 12 <= y <= boxes[i][1] + 12:
-                    boxes[i] = [min(x, boxes[i][0]), min(y, boxes[i][1]), max(x + h, boxes[i][2]), max(y + h,
+                if boxes[i][2] - 6 <= x + w <= boxes[i][2] + 6 and boxes[i][1] - 10 <= y <= boxes[i][1] + 10 and boxes[i].all() != 0:
+                    boxes[i] = [min(x, boxes[i][0]), min(y, boxes[i][1]), max(x + w, boxes[i][2]), max(y + h,
                                                                                                        boxes[i][3])]
+
                     boxes.resize((boxes.shape[0]-1, 4))
                     added = True
                     j -= 1
@@ -90,10 +90,12 @@ def crop_image(input_img):
     contours = find_contours(input_img)
     sz = 3
     # Find maximum bounding coordinates
-    left = int(np.min(contours[:, 0])) - sz
-    top = int(np.min(contours[:, 1])) - sz
-    right = int(np.max(contours[:, 2])) + sz
-    bottom = int(np.max(contours[:, 3])) + sz
+    # Do max(number, 0) incase the crop is already at the boundary, subtracting the safe-zone will result
+    # in a negative number
+    left = max(int(np.min(contours[:, 0])) - sz, 0)
+    top = max(int(np.min(contours[:, 1])) - sz, 0)
+    right = max(int(np.max(contours[:, 2])) + sz, 0)
+    bottom = max(int(np.max(contours[:, 3])) + sz, 0)
     # Crop based on coordinates found
     cropped_img = input_img[top:bottom, left:right]
     return cropped_img
@@ -115,13 +117,12 @@ def extract_characters(input_img, name=None):
     boxes = find_contours(input_img)
     # Sort character by x-value, so the list is ordered left to right
     boxes = boxes[boxes[:, 0].argsort()]
-    print(boxes)
     # Get height of image
     img_height = input_img.shape[0]
     global char_id
     for box in boxes:
         char_id += 1
-        sz = 3
+        sz = 2
         # Create temp_box list that converts all elements in boxes to integers (from floats).
         temp_box = [int(element) for element in box]
         # Crop image to match it's bounding box + the safe-zone constant
@@ -166,19 +167,20 @@ def resize_characters(character, size):
         ---------------
         character       image of character
     """
-    # Find character with largest size in both x and y
-    if size % 2 != 0:
-        size += 1
-    extra_y = 0
-    extra_x = 0
-    # If the size isn't an even number, round it up to the nearest one
-    if character[0].shape[0] % 2 == 1:
-        extra_y = 1
-    if character[0].shape[1] % 2 == 1:
-        extra_x = 1
-    b_y = int((size - character[0].shape[0])/2)
-    b_x = int((size - character[0].shape[1])/2)
-    character[0] = cv2.copyMakeBorder(character[0], b_y + extra_y, b_y, b_x + extra_x, b_x, 1, (0, 0, 0))
+    max_size = max(character[0].shape[0], character[0].shape[1])
+    b_y = max_size - character[0].shape[0]
+    b_x = max_size - character[0].shape[1]
+    add_y1 = int(b_y / 2)
+    add_y2 = int(b_y / 2)
+    if b_y % 2 == 1:
+        add_y1 = int(b_y / 2 + .5)
+        add_y2 = int(b_y / 2 - .5)
+    add_x1 = int(b_x / 2)
+    add_x2 = int(b_x / 2)
+    if b_x % 2 == 1:
+        add_x1 = int(b_x / 2 + .5)
+        add_x2 = int(b_x / 2 - .5)
+    character[0] = cv2.copyMakeBorder(character[0], add_y1, add_y2, add_x1, add_x2, 1, (0, 0, 0))
     character[0] = cv2.resize(character[0], (32, 32))
     return character
 
@@ -215,7 +217,7 @@ def create_boxes(boxes, image, name):
     f.close()
 
 
-def store_many_hdf5(images, labels, ui=""):
+def store_many_hdf5(images, labels, name):
     """ Stores an array of images to HDF5.
         Parameters:
         ---------------
@@ -223,12 +225,7 @@ def store_many_hdf5(images, labels, ui=""):
         labels       labels array, (N, 1) to be stored
     """
     num_images = len(images)
-    if ui == "train":
-        hdf5_dir = "C:/Users/Truman/Documents/GitHub/MathVision/HDF5/f{0}_characters.h5".format(num_images)
-    elif ui == "test":
-        hdf5_dir = "C:/Users/Truman/Documents/GitHub/MathVision/HDF5/f{0}_characters_test.h5".format(num_images)
-    else:
-        hdf5_dir = "C:/Users/Truman/Documents/GitHub/MathVision/HDF5/f{0}_characters.h5".format(num_images)
+    hdf5_dir = "C:/Users/Truman/Documents/GitHub/MathVision/HDF5/f{0}_characters_{1}.h5".format(num_images, name)
     # Create a new HDF5 file
     file = h5py.File(hdf5_dir, "w")
 
@@ -254,14 +251,13 @@ def main():
             extra = "_test"
         img_dict["img_{0}".format(char)] = cv2.imread('PAGES/page_{0}{1}.png'.format(
             char.lower() + "_upper" if upper else char, extra))
-
     for image in img_dict:
         img_dict[image] = black_and_white(img_dict[image])
     print("Step 1")
     loop1 = tqdm(total=len(img_dict), position=0, leave=False)
+    loop1.set_description("Running...")
     boxes_dict = {}
     for image in img_dict:
-        loop1.set_description("Running...")
         loop1.update(1)
         # Crop image
         img_dict[image] = crop_image(img_dict[image])
@@ -271,9 +267,10 @@ def main():
     print("Step 1 Complete")
     print("Step 2")
     loop2 = tqdm(total=len(img_dict), position=0, leave=False)
+    loop2.set_description("Running...")
     characters_dict = {}
+    # character j disappears in next lines of code ???
     for image in img_dict:
-        loop2.set_description("Running...")
         loop2.update(1)
         i = 0
         characters = extract_characters(img_dict[image], image)
@@ -285,8 +282,8 @@ def main():
     print("Step 3")
     size = max_character_size([x for x in characters_dict.values()])
     loop3 = tqdm(total=len(characters_dict), position=0, leave=False)
+    loop3.set_description("Running...")
     for char in characters_dict:
-        loop3.set_description("Running...")
         loop3.update(1)
         characters_dict[char] = resize_characters(characters_dict[char], size)
     loop3.close()
@@ -305,9 +302,9 @@ def main():
     resized_chars_copy = np.asarray([x[0] for x in list(characters_dict.values())])
     character_row = []
     loop4 = tqdm(total=length, position=0, leave=False)
+    loop4.set_description("Running...")
     # Make rows of 10 characters
     for i in range(length):
-        loop4.set_description("Running...")
         loop4.update(1)
         h_concat = cv2.hconcat(resized_chars_copy[10*i:10*(i+1)])
         # Check if this is the last row to create
@@ -344,11 +341,11 @@ def main():
         final_label_lst.append(usable_characters_index[characters_dict[char][1]])
     loop5.close()
     print("Step 6 Complete")
-    # for image in final_concat_dict:
-    #     cv2.imshow("image", final_concat_dict[image])
-    #     cv2.waitKey()
+    for image in final_concat_dict:
+        cv2.imshow("image", final_concat_dict[image])
+        cv2.waitKey()
     print("Saving images...")
-    store_many_hdf5(final_img_lst, final_label_lst, "train")
+    store_many_hdf5(final_img_lst, final_label_lst, "training_data")
 
 
 if __name__ == '__main__':

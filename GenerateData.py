@@ -1,24 +1,24 @@
 from PIL import ImageFont, ImageDraw, Image
 import cv2
 import numpy as np
-characters = [x for x in '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ#$()+,-.:=[]^{}']
+characters = [x for x in '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ#$()+,-.=[]^{}']
+
 
 # TODO: Add comments to all methods to describe code.
-# TODO: Add generation of images with text of any amount of fonts, have them split up into multiple images
 
 
-def create_base(size):
-    base = np.full((size, size), 255, dtype="uint8")
+def create_base(width, length):
+    base = np.full((length, width), 255, dtype="uint8")
     return base
 
 
 def add_text(base, char, test):
-    current_char = char + " "
+    current_char = char + "  "
     img = Image.fromarray(base)
     draw = ImageDraw.Draw(img)
-    font = ImageFont.truetype("TFF/Roboto-MediumItalic.ttf", 30)
-    for i in range(30):
-        draw.text((5, i*40), current_char * 32, font=font, fill=0)
+    for i in range(16):
+        font = ImageFont.truetype("TFF/Roboto-MediumItalic.ttf", i+30)
+        draw.text((10, i * 40 + i * 10 + 5), current_char * 32, font=font, fill=0)
     img = np.array(img)
     upper = False
     print(char)
@@ -38,7 +38,7 @@ def display_image(img):
 
 def main(test):
     for char in characters:
-        add_text(create_base(1250), char, test)
+        add_text(create_base(2000, 850), char, test)
 
 
 if __name__ == "__main__":
