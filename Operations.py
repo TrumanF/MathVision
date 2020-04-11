@@ -1,13 +1,10 @@
-import cv2
+import matplotlib as plt
 import numpy as np
 import math
 import h5py
-import GenerateData
 import Keras
-import re
 import sympy
 from sympy.parsing.sympy_parser import parse_expr
-from sympy.utilities.lambdify import lambdify, implemented_function
 from sympy.abc import x
 from sympy.parsing.sympy_parser import standard_transformations,implicit_multiplication_application
 
@@ -53,6 +50,11 @@ def join_characters(characters, expo_lst):
                        (implicit_multiplication_application, ))
     a = parse_expr(final_string, transformations=transformations)
     print(sympy.solve(a, x))
+
+
+def graph_function():
+    t = np.arange(0, 8, .2)
+    
 
 join_characters(predicts, dset_expo)
 

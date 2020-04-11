@@ -228,7 +228,6 @@ def store_many_hdf5(images, labels, name):
     hdf5_dir = "C:/Users/Truman/Documents/GitHub/MathVision/HDF5/f{0}_characters_{1}.h5".format(num_images, name)
     # Create a new HDF5 file
     file = h5py.File(hdf5_dir, "w")
-
     # Create a dataset in the file
     file.create_dataset("images", np.shape(images), h5py.h5t.STD_U8BE, data=images)
     file.create_dataset("labels", np.shape(labels), h5py.h5t.STD_U8BE, data=labels)
